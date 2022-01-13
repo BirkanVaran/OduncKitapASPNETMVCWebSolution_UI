@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using 
 
 namespace OduncKitapASPNETMVCWebSolution_BLL.Managers
 {
@@ -30,6 +29,21 @@ namespace OduncKitapASPNETMVCWebSolution_BLL.Managers
             {
 
                 throw;
+            }
+        }
+
+        public bool YeniKitapEkle(Kitaplar yeniKitap)
+        {
+            try
+            {
+                dbcontext.Kitaplar.Add(yeniKitap);
+                dbcontext.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
         }
 

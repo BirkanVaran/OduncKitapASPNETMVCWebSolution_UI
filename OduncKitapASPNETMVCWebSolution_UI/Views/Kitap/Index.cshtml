@@ -1,4 +1,5 @@
-﻿
+﻿@using OduncKitapASPNETMVCWebSolution_BLL
+@model List<Kitaplar>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -12,31 +13,89 @@
         <div class="alert alert-danger" role="alert">
             @ViewBag.HataMesaji
         </div>
+        <br />
     }
     if (ViewBag.KitapListCount == 0)
     {
         <div class="alert alert-success" role="alert">
-            Kitap tablosunda kayıt bulunmamaktadır.
+            Kitaplar tablosunda kayıt bulunmamaktadır.
         </div>
+        <br />
     }
-    @Html.ActionLink("YENİ KİTAP EKLE", "Ekle", "Kitap", null, new { @class = "btn btn-sm btn-primary", @style = "margin:5px" })
+    @Html.ActionLink("Yeni Kitap Ekle", "Ekle", "Kitap", null, new
+    {
+        @class = "btn btn-sm btn-default",
+                                                               @style = "background-color:navy;color:powderblue;margin:5px"
+    })
+
     if (ViewBag.KitapListCount > 0)
     {
+
         int siraNo = 0;
+        if (ViewBag.SuAn > 1)
+        {
+            siraNo += (ViewBag.SuAn - 1) * ViewBag.PageSize;
+        }
         <table class="table table-hover">
             <tr>
                 <th>Sıra No</th>
                 <th>Kitap Adı</th>
+                <th>Tür</th>
+                <th>Yazar</th>
                 <th>Kayıt Tarihi</th>
                 <th>İşlemler</th>
             </tr>
             @foreach (var item in Model)
             {
                 <tr>
-                    
+                    <td>@(siraNo+=1)</td>
+                    <td>@item.KitapAdi</td>
+                    <td>@item.Turler.TurAdi</td>
+                    <td>@item.Yazarlar.YazarAdi @item.Yazarlar.YazarSoyadi</td>
+                    <td>@item.KayitTarihi.ToShortDateString()</td>
+                    <td>
+                        @Html.ActionLink("Düzenle", "Duzenle", "Kitap", new { id = item.Id }, new { @class = "btn btn-sm btn-warning", @style = "margin-right:3px" })
+                        @Html.ActionLink("Sil", "Sil", "Kitap", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", @style = "margin-right:3px" })
+
+                    </td>
                 </tr>
             }
         </table>
+        <br />
+        <div class="row">
+            <div class="text-center">
+                <ul class="pagination">
+                    <li>
+                        <a href="@Url.Action("Index","Kitap",new { page=ViewBag.SuAn-1})" id="pageprevious">&laquo;</a>
+                    </li>
+                    @for (int i = 1; i <= (int)ViewBag.ToplamSayfa; i++)
+                    {
+                        <li>
+                            <a href="@Url.Action("Index","Kitap",new { page = i })">@i</a>
+                        </li>
+                    }
+                    <li>
+                        <a href="@Url.Action("Index","Kitap",new { page=ViewBag.SuAn+1})" id="pagenext">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
     }
 }
 
+
+@*     @RenderSection("scripts", required: false)
+*@
+@section scripts{
+    <script>
+        var SuAn =@ViewBag.SuAn;
+        var toplam =@ViewBag.ToplamSayfa;
+        if (SuAn==1) {
+            $("#pageprevious").removeAttr("href");
+        }
+        if (SuAn==toplam) {
+            $("#pagenext").removeAttr("href");
+        }
+    </script>
+}
