@@ -21,7 +21,7 @@ namespace OduncKitapASPNETMVCWebSolution_BLL.Managers
                 List<Kitaplar> kitaplar = new List<Kitaplar>();
                 // Page işlemi eklenecek
 
-                kitaplar = dbcontext.Kitaplar.Where(x => !x.SilindiMi && x.StokAdeti > 0).ToList();
+                kitaplar = dbcontext.Kitaplar.Where(x => !x.SilindiMi && x.StokAdeti > 0).OrderByDescending(x=>x.Id).ToList();
 
                 return kitaplar;
             }

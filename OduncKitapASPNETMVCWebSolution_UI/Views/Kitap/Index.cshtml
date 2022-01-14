@@ -36,46 +36,54 @@
         {
             siraNo += (ViewBag.SuAn - 1) * ViewBag.PageSize;
         }
-<table class="table table-hover sortable">
-    @*<tr>
-            <th>Sıra No</th>
-            <th>Kitap Adı</th>
-            <th>Tür</th>
-            <th>Yazar</th>
-            <th>Kayıt Tarihi</th>
-            <th>İşlemler</th>
-        </tr>*@
-    <thead>
-        <tr>
-            <th data-defaultsign="_19" style="cursor: pointer">Sıra No &darr;&uarr;</th>
-            <th data-defaultsign="date" style="cursor:pointer">Kayıt Tarihi &darr;&uarr;</th>
-            <th>Resim</th>
-            <th data-defaultsign="AZ" style="cursor:pointer">Kitap Adı &darr;&uarr;</th>
-            <th data-defaultsign="AZ" style="cursor:pointer">Tür &darr;&uarr;</th>
-            <th data-defaultsign="AZ" style="cursor:pointer">Yazar &darr;&uarr;</th>
+        <table class="table table-hover sortable">
+            @*<tr>
+                    <th>Sıra No</th>
+                    <th>Kitap Adı</th>
+                    <th>Tür</th>
+                    <th>Yazar</th>
+                    <th>Kayıt Tarihi</th>
+                    <th>İşlemler</th>
+                </tr>*@
+            <thead>
+                <tr>
+                    <th data-defaultsign="_19" style="cursor: pointer">Sıra No &darr;&uarr;</th>
+                    <th data-defaultsign="date" style="cursor:pointer">Kayıt Tarihi &darr;&uarr;</th>
+                    <th>Resim</th>
+                    <th data-defaultsign="AZ" style="cursor:pointer">Kitap Adı &darr;&uarr;</th>
+                    <th data-defaultsign="AZ" style="cursor:pointer">Tür &darr;&uarr;</th>
+                    <th data-defaultsign="AZ" style="cursor:pointer">Yazar &darr;&uarr;</th>
 
-            <th>İşlemler</th>
-        </tr>
-    </thead>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
 
-    @foreach (var item in Model)
-    {
-<tr>
-    <td class="align-middle">@(siraNo+=1)</td>
-    <td class="align-middle">@item.KayitTarihi.ToShortDateString()</td>
-    <td><img src="@item.ResimLink" style="width:65px" /></td>
-    <td class="align-middle">@item.KitapAdi</td>
-    <td class="align-middle">@item.Turler.TurAdi</td>
-    <td class="align-middle">@item.Yazarlar.YazarAdi @item.Yazarlar.YazarSoyadi</td>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="align-middle">@(siraNo+=1)</td>
+                    <td class="align-middle">@item.KayitTarihi.ToShortDateString()</td>
+                    @if (item.ResimLink == null)
+                    {
+                        <td><img src="~/BookImages/defaultbook.jpg" style="width:65px" /></td>
+                    }
+                    else
+                    {
+                        <td><img src="@item.ResimLink" style="width:65px" /></td>
+                    }
 
-    <td class="align-middle">
-        @Html.ActionLink("Düzenle", "Duzenle", "Kitap", new { id = item.Id }, new { @class = "btn btn-sm btn-warning", @style = "margin-right:3px" })
-        @Html.ActionLink("Sil", "Sil", "Kitap", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", @style = "margin-right:3px" })
+                    <td class="align-middle">@item.KitapAdi</td>
+                    <td class="align-middle">@item.Turler.TurAdi</td>
+                    <td class="align-middle">@item.Yazarlar.YazarAdi @item.Yazarlar.YazarSoyadi</td>
 
-    </td>
-</tr>
-    }
-</table>
+                    <td class="align-middle">
+                        @Html.ActionLink("Düzenle", "Duzenle", "Kitap", new { id = item.Id }, new { @class = "btn btn-sm btn-warning", @style = "margin-right:3px" })
+                        @Html.ActionLink("Sil", "Sil", "Kitap", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", @style = "margin-right:3px" })
+
+                    </td>
+                </tr>
+            }
+        </table>
         <br />
         <div class="row">
             <div class="text-center col-4 offset-4">
